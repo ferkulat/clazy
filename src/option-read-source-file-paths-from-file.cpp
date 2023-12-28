@@ -54,7 +54,7 @@ std::vector<std::unique_ptr<std::fstream>> openFiles(std::vector<std::string> co
 }
 
 auto readLinesInto(std::vector<std::string>& dest){
-    return [&dest](std::unique_ptr<std::fstream>& fs){
+    return [&dest](std::unique_ptr<std::fstream>const& fs){
         for(std::string line;std::getline(*fs, line);){
             dest.push_back(std::move(line));
         }
@@ -84,7 +84,7 @@ auto intoArg (T const& t){
     auto pt = std::make_unique<char[]>(t.length()+1);
     std::strncpy(pt.get(), t.data(), t.length() );
     return pt;
-};
+}
 
 FixedCmdLine addOptionToReadSourceFilesFromFile(int argc, const char **argv){
     auto const arguments       = std::vector<std::string_view >(argv, argv+argc);
@@ -92,7 +92,7 @@ FixedCmdLine addOptionToReadSourceFilesFromFile(int argc, const char **argv){
     auto const sourceListFiles = getSourceListFiles(sourceListOpts);
     auto const sourceFiles     = readSourceFilesFrom(sourceListFiles);
     auto const regularArguments= getRegularArguments(arguments);
-    auto const intoRawPointer  = [](std::unique_ptr<char[]>&item){return item.get();};
+    auto const intoRawPointer  = [](std::unique_ptr<char[]>const& item){return item.get();};
 
     auto result                = FixedCmdLine{};
 
