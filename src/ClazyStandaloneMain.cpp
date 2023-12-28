@@ -25,6 +25,7 @@
 #include "ClazyContext.h"
 
 #include "checks.json.h"
+#include "option-read-source-file-paths-from-file.hpp"
 
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <clang/Tooling/Tooling.h>
@@ -195,8 +196,8 @@ int main(int argc, const char **argv)
             break;
         }
     }
-
-    auto expectedParser = CommonOptionsParser::create(argc, argv, s_clazyCategory, cl::ZeroOrMore);
+    auto cmd = addOptionToReadSourceFilesFromFile(argc, argv);
+    auto expectedParser = CommonOptionsParser::create(cmd.argc, cmd.argv.get(), s_clazyCategory, cl::ZeroOrMore);
     if (!expectedParser) {
         llvm::errs() << expectedParser.takeError();
         return 1;

@@ -97,4 +97,5 @@ set(CLAZY_CHECKS_SRCS ${CLAZY_CHECKS_SRCS}
   ${CMAKE_CURRENT_LIST_DIR}/src/checks/level2/rule-of-three.cpp
   ${CMAKE_CURRENT_LIST_DIR}/src/checks/level2/static-pmf.cpp
   ${CMAKE_CURRENT_LIST_DIR}/src/checks/level2/virtual-call-ctor.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/src/option-read-source-file-paths-from-file.cpp
 )
