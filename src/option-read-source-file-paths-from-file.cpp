@@ -20,20 +20,18 @@ std::vector<std::string_view> getOptionsSources(std::vector<std::string_view >co
     return result;
 }
 
-auto intoFileName(){
-    return [](std::string_view const& arg) ->std::string{
-        if (std::cmatch file; std::regex_search(arg.data(), file, optRegex)) {
-            return file[1];
-        }
-        return {};
-    };
+auto intoFileName(std::string_view const& arg) ->std::string{
+    if (std::cmatch file; std::regex_search(arg.data(), file, optRegex)) {
+        return file[1];
+    }
+    return {};
 }
 
 std::vector<std::string> getSourceListFiles(std::vector<std::string_view> const& vector1)
 {
     auto result = std::vector<std::string>{};
 
-    std::transform(std::cbegin(vector1), std::cend(vector1), std::back_inserter(result), intoFileName());
+    std::transform(std::cbegin(vector1), std::cend(vector1), std::back_inserter(result), intoFileName);
     std::sort(std::begin(result), std::end(result));
 
     return {std::begin(result), std::unique(std::begin(result), std::end(result))};
@@ -81,8 +79,9 @@ std::vector<std::string_view> getRegularArguments(std::vector<std::string_view> 
     return result;
 }
 
-auto intoArg = [](auto const& t){
-    auto pt =  std::make_unique<char[]>(t.length()+1);
+template<typename T>
+auto intoArg (T const& t){
+    auto pt = std::make_unique<char[]>(t.length()+1);
     std::strncpy(pt.get(), t.data(), t.length() );
     return pt;
 };
@@ -97,8 +96,8 @@ FixedCmdLine addOptionToReadSourceFilesFromFile(int argc, const char **argv){
 
     auto result                = FixedCmdLine{};
 
-    std::transform(std::cbegin(regularArguments), std::cend(regularArguments), std::back_inserter(result.args), intoArg);
-    std::transform(std::cbegin(sourceFiles)     , std::cend(sourceFiles)     , std::back_inserter(result.args), intoArg);
+    std::transform(std::cbegin(regularArguments), std::cend(regularArguments), std::back_inserter(result.args), intoArg<std::string_view>);
+    std::transform(std::cbegin(sourceFiles)     , std::cend(sourceFiles)     , std::back_inserter(result.args), intoArg<std::string>     );
 
     result.argv = std::make_unique<const char*[]>(result.args.size());
     result.argc = result.args.size();

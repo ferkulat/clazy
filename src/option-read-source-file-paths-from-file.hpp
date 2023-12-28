@@ -9,9 +9,9 @@
 #include <memory>
 
 struct FixedCmdLine{
-    int argc;
-    std::unique_ptr<const char*[]> argv;
     std::vector<std::unique_ptr<char[]>> args;
+    std::unique_ptr<const char*[]>       argv;
+    int                                  argc;
 };
 
 FixedCmdLine addOptionToReadSourceFilesFromFile(int argc, const char **argv);
